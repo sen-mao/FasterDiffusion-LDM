@@ -1,19 +1,12 @@
-# Latent Diffusion Models
-[arXiv](https://arxiv.org/abs/2112.10752) | [BibTeX](#bibtex)
+# Faster Diffusion: Rethinking the Role of UNet Encoder in Diffusion Models
 
-<p align="center">
-<img src=assets/results.gif />
-</p>
+<a href='https://arxiv.org/abs/2312.09608'><img src='https://img.shields.io/badge/ArXiv-2306.05414-red'></a>
 
-
-
-[**High-Resolution Image Synthesis with Latent Diffusion Models**](https://arxiv.org/abs/2112.10752)<br/>
-[Robin Rombach](https://github.com/rromb)\*,
-[Andreas Blattmann](https://github.com/ablattmann)\*,
-[Dominik Lorenz](https://github.com/qp-qp)\,
-[Patrick Esser](https://github.com/pesser),
-[Björn Ommer](https://hci.iwr.uni-heidelberg.de/Staff/bommer)<br/>
-\* equal contribution
+> **Faster Diffusion: Rethinking the Role of UNet Encoder in Diffusion Models**
+>
+> [Senmao Li](https://github.com/sen-mao)\*, [Taihang Hu](https://github.com/hutaiHang)\*, [Fahad Khan](https://sites.google.com/view/fahadkhans/home), [Linxuan Li](https://github.com/Potato-lover), [Shiqi Yang](https://www.shiqiyang.xyz/), [Yaxing Wang](https://yaxingwang.netlify.app/author/yaxing-wang/), [Ming-Ming Cheng](https://mmcheng.net/), [Jian Yang](https://scholar.google.com.hk/citations?user=6CIDtZQAAAAJ&hl=en)
+>
+> ***Denotes equal contribution.**
 
 <p align="center">
 <img src=assets/modelfigure.png />
@@ -343,6 +336,25 @@ Thanks for open-sourcing!
   year={2023}
 }
 
+@misc{rombach2021highresolution,
+      title={High-Resolution Image Synthesis with Latent Diffusion Models}, 
+      author={Robin Rombach and Andreas Blattmann and Dominik Lorenz and Patrick Esser and Björn Ommer},
+      year={2021},
+      eprint={2112.10752},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+
+@misc{https://doi.org/10.48550/arxiv.2204.11824,
+  doi = {10.48550/ARXIV.2204.11824},
+  url = {https://arxiv.org/abs/2204.11824},
+  author = {Blattmann, Andreas and Rombach, Robin and Oktay, Kaan and Ommer, Björn},
+  keywords = {Computer Vision and Pattern Recognition (cs.CV), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  title = {Retrieval-Augmented Diffusion Models},
+  publisher = {arXiv},
+  year = {2022},  
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
 ```
 
 
