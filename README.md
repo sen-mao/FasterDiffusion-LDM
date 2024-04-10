@@ -8,20 +8,40 @@
 >
 > ***Denotes equal contribution.**
 
-[//]: # (## Requirements)
+## Requirements
 
-[//]: # (A suitable [conda]&#40;https://conda.io/&#41; environment named `ldm` can be created)
+A suitable [conda](https://conda.io/) environment named `ldm-faster-diffusion` can be created
 
-[//]: # (and activated with:)
+and activated with:
 
-[//]: # ()
-[//]: # (```)
 
-[//]: # (conda env create -f environment.yaml)
+```
 
-[//]: # (conda activate ldm)
+conda env create -f environment.yaml
 
-[//]: # (```)
+conda activate ldm-faster-diffusion
+
+```
+
+## Sampling and Evaluation ('run_image_sample.sh')
+
+LDM provides a script for sampling from class-conditional ImageNet with Latent Diffusion Models (https://github.com/CompVis/latent-diffusion/blob/main/scripts/latent_imagenet_diffusion.ipynb).
+
+```shell
+#!/bin/bash
+
+export NCCL_P2P_DISABLE=1
+
+NUM_GPUS=2
+
+MODEL_FLAGS="--batch_size 16 --num_samples 50000 --classifier_scale 1.5 --ddim_eta 0.0 --tqdm_disable True"
+
+echo 'Class-conditional ldm sampling for ImageNet256x256:'
+mpiexec -n $NUM_GPUS python ldm_sample.py $MODEL_FLAGS
+
+#python evaluations/evaluator.py /data/20240322_fasterdiffusion_icml2024rebuttal/guided-diffusion/evaluations/VIRTUAL_imagenet256_labeled.npz ldm_samples_50000x256x256x3_eta0.0_scale1.5.npz
+
+```
 
 
 ## BibTeX

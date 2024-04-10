@@ -4,6 +4,7 @@ import math
 from typing import Iterable
 
 import numpy as np
+import torch
 import torch as th
 import torch.nn as nn
 import torch.nn.functional as F
@@ -707,6 +708,18 @@ class UNetModel(nn.Module):
         self.middle_block.apply(convert_module_to_f32)
         self.output_blocks.apply(convert_module_to_f32)
 
+    def warpped_feature(self, sample, step):
+        uncond, cond = sample.chunk(2)
+        sample_expand = torch.cat([uncond.repeat(step, 1, 1, 1), cond.repeat(step, 1, 1, 1)])
+        return sample_expand
+
+    def warpped_skip_feature(self, block_samples, step):
+        down_block_res_samples = []
+        for sample in block_samples:
+            sample_expand = self.warpped_feature(sample, step)
+            down_block_res_samples.append(sample_expand)
+        return down_block_res_samples
+
     def forward(self, x, timesteps=None, context=None, y=None,**kwargs):
         """
         Apply the model to an input batch.
@@ -727,16 +740,38 @@ class UNetModel(nn.Module):
             assert y.shape == (x.shape[0],)
             emb = emb + self.label_emb(y)
 
-        h = x.type(self.dtype)
-        for module in self.input_blocks:
-            h = module(h, emb, context)
-            hs.append(h)
-        h = self.middle_block(h, emb, context)
-        for module in self.output_blocks:
+        """ -------------------- share encoder -------------------- """
+        if self.register_store['se_step'] == False:  # do not share encoder step (i.e., key time-steps)
+            h = x.type(self.dtype)
+            for module in self.input_blocks:  # down
+                h = module(h, emb, context)
+                hs.append(h)
+            h = self.middle_block(h, emb, context)
+
+            self.register_store['skip_feature'] = [hs_sample.detach().clone() for hs_sample in hs]
+            self.register_store['mid_feature'] = h.detach().clone()
+            if self.register_store['use_parallel']:
+                # parallel features
+                parallel_steps = len(self.register_store['steps'])
+                hs = self.warpped_skip_feature(self.register_store['skip_feature'], parallel_steps)
+                h = self.warpped_feature(self.register_store['mid_feature'], parallel_steps)
+                context = context.repeat(parallel_steps, 1, 1)
+
+                # parallel timesteps
+                step = torch.from_numpy(self.register_store['steps'])
+                ts_parallel = torch.flatten(torch.unsqueeze(step, 1).repeat(1, self.register_store['bs']).repeat(2, 1)).to(h.device)
+                t_emb = timestep_embedding(ts_parallel, self.model_channels, repeat_only=False)
+                emb = self.time_embed(t_emb)
+        else:
+            # use stored encoder features
+            hs = [hs_sample.detach().clone() for hs_sample in self.register_store['skip_feature']]
+            h = self.register_store['mid_feature'].detach().clone()
+
+        for module in self.output_blocks:  # mid
             h = th.cat([h, hs.pop()], dim=1)
             h = module(h, emb, context)
         h = h.type(x.dtype)
-        if self.predict_codebook_ids:
+        if self.predict_codebook_ids:  # up
             return self.id_predictor(h)
         else:
             return self.out(h)

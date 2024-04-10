@@ -90,7 +90,8 @@ class DDIMSampler(object):
         # sampling
         C, H, W = shape
         size = (batch_size, C, H, W)
-        print(f'Data shape for DDIM sampling is {size}, eta {eta}')
+        if self.model.model.diffusion_model.register_store['tqdm_disable'] == False:
+            print(f'Data shape for DDIM sampling is {size}, eta {eta}')
 
         samples, intermediates = self.ddim_sampling(conditioning, size,
                                                     callback=callback,
@@ -129,29 +130,45 @@ class DDIMSampler(object):
             subset_end = int(min(timesteps / self.ddim_timesteps.shape[0], 1) * self.ddim_timesteps.shape[0]) - 1
             timesteps = self.ddim_timesteps[:subset_end]
 
+        self.model.model.diffusion_model.register_store['init_img'] = img.detach().clone()  # TODO: for faster-diffusion
         intermediates = {'x_inter': [img], 'pred_x0': [img]}
         time_range = reversed(range(0,timesteps)) if ddim_use_original_steps else np.flip(timesteps)
         total_steps = timesteps if ddim_use_original_steps else timesteps.shape[0]
-        print(f"Running DDIM Sampling with {total_steps} timesteps")
+        if not self.model.model.diffusion_model.register_store['tqdm_disable']:
+            print(f"Running DDIM Sampling with {total_steps} timesteps")
 
-        iterator = tqdm(time_range, desc='DDIM Sampler', total=total_steps)
+        iterator = tqdm(time_range, desc='DDIM Sampler', total=total_steps, disable=self.model.model.diffusion_model.register_store['tqdm_disable'])
 
+        I = 0
         for i, step in enumerate(iterator):
+            if i < I: continue
             index = total_steps - i - 1
             ts = torch.full((b,), step, device=device, dtype=torch.long)
+            if self.model.model.diffusion_model.register_store['use_parallel']:
+                se_index = self.model.model.diffusion_model.register_store['key_time_steps'].index(i)
+                tstep_s, tstep_e = self.model.model.diffusion_model.register_store['key_time_steps'][se_index:se_index+2]
+                self.model.model.diffusion_model.register_store['steps'] = time_range[tstep_s:tstep_e].copy()
+                self.model.model.diffusion_model.register_store['indexs'] = [total_steps - x - 1 for x in range(tstep_s,tstep_e)]
+                I += (tstep_e-tstep_s)
+            else:
+                I += 1
 
             if mask is not None:
                 assert x0 is not None
                 img_orig = self.model.q_sample(x0, ts)  # TODO: deterministic forward pass?
                 img = img_orig * mask + (1. - mask) * img
 
+            if i not in self.model.model.diffusion_model.register_store['key_time_steps']:  # TODO: for faster-diffusion
+                self.model.model.diffusion_model.register_store['se_step'] = True
             outs = self.p_sample_ddim(img, cond, ts, index=index, use_original_steps=ddim_use_original_steps,
                                       quantize_denoised=quantize_denoised, temperature=temperature,
                                       noise_dropout=noise_dropout, score_corrector=score_corrector,
                                       corrector_kwargs=corrector_kwargs,
                                       unconditional_guidance_scale=unconditional_guidance_scale,
                                       unconditional_conditioning=unconditional_conditioning)
+            self.model.model.diffusion_model.register_store['se_step'] = False
             img, pred_x0 = outs
+
             if callback: callback(i)
             if img_callback: img_callback(pred_x0, i)
 
@@ -160,6 +177,26 @@ class DDIMSampler(object):
                 intermediates['pred_x0'].append(pred_x0)
 
         return img, intermediates
+
+    @torch.no_grad()
+    def sample_ddim(self, alphas, alphas_prev, sigmas, sqrt_one_minus_alphas, b, index, device, x, e_t, quantize_denoised, repeat_noise, temperature, noise_dropout):
+        # select parameters corresponding to the currently considered timestep
+        a_t = torch.full((b, 1, 1, 1), alphas[index], device=device)
+        a_prev = torch.full((b, 1, 1, 1), alphas_prev[index], device=device)
+        sigma_t = torch.full((b, 1, 1, 1), sigmas[index], device=device)
+        sqrt_one_minus_at = torch.full((b, 1, 1, 1), sqrt_one_minus_alphas[index], device=device)
+
+        # current prediction for x_0
+        pred_x0 = (x - sqrt_one_minus_at * e_t) / a_t.sqrt()
+        if quantize_denoised:
+            pred_x0, _, *_ = self.model.first_stage_model.quantize(pred_x0)
+        # direction pointing to x_t
+        dir_xt = (1. - a_prev - sigma_t ** 2).sqrt() * e_t
+        noise = sigma_t * noise_like(x.shape, device, repeat_noise) * temperature
+        if noise_dropout > 0.:
+            noise = torch.nn.functional.dropout(noise, p=noise_dropout)
+        x_prev = a_prev.sqrt() * pred_x0 + dir_xt + noise
+        return x_prev, pred_x0
 
     @torch.no_grad()
     def p_sample_ddim(self, x, c, t, index, repeat_noise=False, use_original_steps=False, quantize_denoised=False,
@@ -184,20 +221,20 @@ class DDIMSampler(object):
         alphas_prev = self.model.alphas_cumprod_prev if use_original_steps else self.ddim_alphas_prev
         sqrt_one_minus_alphas = self.model.sqrt_one_minus_alphas_cumprod if use_original_steps else self.ddim_sqrt_one_minus_alphas
         sigmas = self.model.ddim_sigmas_for_original_num_steps if use_original_steps else self.ddim_sigmas
-        # select parameters corresponding to the currently considered timestep
-        a_t = torch.full((b, 1, 1, 1), alphas[index], device=device)
-        a_prev = torch.full((b, 1, 1, 1), alphas_prev[index], device=device)
-        sigma_t = torch.full((b, 1, 1, 1), sigmas[index], device=device)
-        sqrt_one_minus_at = torch.full((b, 1, 1, 1), sqrt_one_minus_alphas[index],device=device)
 
-        # current prediction for x_0
-        pred_x0 = (x - sqrt_one_minus_at * e_t) / a_t.sqrt()
-        if quantize_denoised:
-            pred_x0, _, *_ = self.model.first_stage_model.quantize(pred_x0)
-        # direction pointing to x_t
-        dir_xt = (1. - a_prev - sigma_t**2).sqrt() * e_t
-        noise = sigma_t * noise_like(x.shape, device, repeat_noise) * temperature
-        if noise_dropout > 0.:
-            noise = torch.nn.functional.dropout(noise, p=noise_dropout)
-        x_prev = a_prev.sqrt() * pred_x0 + dir_xt + noise
+        if not self.model.model.diffusion_model.register_store['use_parallel']:  # TODO: for faster-diffusion
+            x_prev, pred_x0 = self.sample_ddim(alphas, alphas_prev, sigmas, sqrt_one_minus_alphas, b, index, device,
+                                               x, e_t, quantize_denoised, repeat_noise, temperature, noise_dropout)
+        else:
+            indexs = self.model.model.diffusion_model.register_store['indexs']
+            steps = self.model.model.diffusion_model.register_store['steps']
+            x_prev = x
+            for i, (index, step) in enumerate(zip(indexs, steps)):
+                curr_e_t = e_t[i * b:(i + 1) * b]
+                x_prev, pred_x0 = self.sample_ddim(alphas, alphas_prev, sigmas, sqrt_one_minus_alphas, b, index, device,
+                                                   x_prev, curr_e_t, quantize_denoised, repeat_noise, temperature, noise_dropout)
+                # Prior noise injection
+                if step / 1000 < 0.15 and self.model.model.diffusion_model.register_store['noise_injection']:  # TODO: for faster-diffusion
+                    x_prev = x_prev + 0.003 * self.model.model.diffusion_model.register_store['init_img']
+
         return x_prev, pred_x0
