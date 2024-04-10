@@ -24,7 +24,9 @@ conda activate ldm-faster-diffusion
 
 ## Sampling and Evaluation ('run_image_sample.sh')
 
-LDM provides a script for sampling from class-conditional ImageNet with Latent Diffusion Models (https://github.com/CompVis/latent-diffusion/blob/main/scripts/latent_imagenet_diffusion.ipynb).
+LDM provides a script for sampling from [**class-conditional ImageNet** with Latent Diffusion Models](https://github.com/CompVis/latent-diffusion/blob/main/scripts/latent_imagenet_diffusion.ipynb).
+The sample code is modified from this code, and the 50k sampling results are saved in the same data format as [ADM](https://github.com/openai/guided-diffusion/blob/main/scripts/classifier_sample.py).
+The evaluation code is obtained from [ADM's TensorFlow evaluation suite](https://github.com/openai/guided-diffusion/tree/main/evaluations), and the evaluation environment is already included in the ldm-faster-diffusion environment.
 
 ```shell
 #!/bin/bash
