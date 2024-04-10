@@ -10,8 +10,7 @@
 
 ## Requirements
 
-A suitable [conda](https://conda.io/) environment named `ldm-faster-diffusion` can be created
-
+A suitable conda environment named `ldm-faster-diffusion` can be created
 and activated with:
 
 
