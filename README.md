@@ -20,7 +20,7 @@ conda env create -f environment.yaml
 conda activate ldm-faster-diffusion
 ```
 
-Please follow the instructions in the [latent_imagenet_diffusion.ipynb](https://github.com/CompVis/latent-diffusion/blob/main/scripts/latent_imagenet_diffusion.ipynb) to download the checkpoint (models/ldm/cin256-v2/model.ckpt with ~1.7 GB).
+Please follow the instructions in the [latent_imagenet_diffusion.ipynb](https://github.com/CompVis/latent-diffusion/blob/main/scripts/latent_imagenet_diffusion.ipynb) to download the checkpoint (`models/ldm/cin256-v2/model.ckpt` with ~1.7 GB).
 
 ## Sampling and Evaluation ('run_image_sample.sh')
 
