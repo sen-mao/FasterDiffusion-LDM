@@ -78,17 +78,6 @@ Run the `infer_ldm.py` to generate images with FasterDiffusion.
       archivePrefix={arXiv},
       primaryClass={cs.CV}
 }
-
-@misc{https://doi.org/10.48550/arxiv.2204.11824,
-  doi = {10.48550/ARXIV.2204.11824},
-  url = {https://arxiv.org/abs/2204.11824},
-  author = {Blattmann, Andreas and Rombach, Robin and Oktay, Kaan and Ommer, Björn},
-  keywords = {Computer Vision and Pattern Recognition (cs.CV), FOS: Computer and information sciences, FOS: Computer and information sciences},
-  title = {Retrieval-Augmented Diffusion Models},
-  publisher = {arXiv},
-  year = {2022},  
-  copyright = {arXiv.org perpetual, non-exclusive license}
-}
 ```
 
 ## Acknowledgement
