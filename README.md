@@ -56,6 +56,16 @@ python evaluations/evaluator.py evaluations/VIRTUAL_imagenet256_labeled.npz $OPE
 
 ```
 
+## Performance
+
+| Model                  | Dataset | Resolution  | FID  | sFID |   IS   | Precision | Recall | s/image |
+|------------------------|:--------:|:---------:|:----:|:----:|:------:|:---------:|:------:|:-------:|
+| LDM                    | ImageNet |  256x256  | 3.60 |  --  | 247.67 |   0.870   | 0.480  |   --    |
+| LDM*                   | ImageNet | 256x256 | 3.39 | 5.14 | 204.57 |   0.825   | 0.534  |  7.951  |
+| LDM w/ FasterDiffusion | ImageNet | 256x256  |      |      |        |           |        |         |
+
+\* Denotes the reproduced results.
+
 # Visualization
 
 Run the `infer_ldm.py` to generate images with FasterDiffusion.

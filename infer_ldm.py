@@ -44,9 +44,9 @@ n_samples_per_class = 1
 
 ddim_steps = 250
 ddim_eta = 0.0
-scale = 3
+scale = 6
 
-use_faster_diffusion = False
+use_faster_diffusion = True
 if not use_faster_diffusion:  # ldm
     key_time_steps = tuple(range(ddim_steps + 1))
 else:  # ldm w/ faster diffusion
