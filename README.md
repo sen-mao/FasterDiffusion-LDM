@@ -8,7 +8,7 @@
 >
 > ***Denotes equal contribution.**
 
-The official codebase for [FasterDiffusion](https://arxiv.org/abs/2312.09608) accelerates [LDM](https://github.com/CompVis/latent-diffusion/tree/main).
+The official codebase for [FasterDiffusion](https://arxiv.org/abs/2312.09608) accelerates [LDM](https://github.com/CompVis/latent-diffusion/tree/main) with a 6x speedup.
 
 ## Requirements
 
