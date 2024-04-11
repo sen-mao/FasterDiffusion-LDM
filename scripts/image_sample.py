@@ -137,8 +137,7 @@ def main():
     label_arr = label_arr[: args.num_samples]
     if dist.get_rank() == 0:
         shape_str = "x".join([str(x) for x in arr.shape])
-        # out_path = f"ldm_samples_{shape_str}_eta{args.ddim_eta}_scale{args.classifier_scale}.npz"
-        out_path = os.path.join(logger.get_dir(), f"samples_{shape_str}_eta{args.ddim_eta}_scale{args.classifier_scale}.npz")
+        out_path = os.path.join(logger.get_dir(), f"samples_{shape_str}.npz")
         logger.log(f"saving to {out_path}")
         np.savez(out_path, arr, label_arr)
 
