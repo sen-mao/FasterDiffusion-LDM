@@ -8,6 +8,8 @@
 >
 > ***Denotes equal contribution.**
 
+The official codebase for [FasterDiffusion](https://arxiv.org/abs/2312.09608) accelerates [LDM](https://github.com/CompVis/latent-diffusion/tree/main).
+
 ## Requirements
 
 A suitable conda environment named `ldm-faster-diffusion` can be created
