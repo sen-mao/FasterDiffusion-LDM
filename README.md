@@ -55,7 +55,7 @@ python evaluations/evaluator.py evaluations/VIRTUAL_imagenet256_labeled.npz $OPE
 
 # Visualization
 
-Run the `infer_ldm.py` to generate images.
+Run the `infer_ldm.py` to generate images with FasterDiffusion.
 
 ## BibTeX
 
