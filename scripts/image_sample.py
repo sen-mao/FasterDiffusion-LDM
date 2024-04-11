@@ -39,11 +39,11 @@ def get_model(config_path, model_path):
 
 def main():
     args = create_argparser().parse_args()
-    print(args)
 
     dist_util.setup_dist()
     output_dir = 'output_ldm_eval' if not args.use_faster_diffusion else 'output_ldm_fdiffusion_eval'
     logger.configure(dir=output_dir)
+    logger.log(args)
 
     # Now, download the checkpoint (~1.7 GB). This will usually take 1-2 minutes.
     model = get_model(args.config_path, args.model_path)
