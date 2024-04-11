@@ -44,9 +44,9 @@ n_samples_per_class = 1
 
 ddim_steps = 250
 ddim_eta = 0.0
-scale = 6
+scale = 3
 
-use_faster_diffusion = True
+use_faster_diffusion = False
 if not use_faster_diffusion:  # ldm
     key_time_steps = tuple(range(ddim_steps + 1))
 else:  # ldm w/ faster diffusion
@@ -105,7 +105,7 @@ with torch.no_grad():
 # display as grid
 grid = torch.stack(all_samples, 0)
 grid = rearrange(grid, 'n b c h w -> (n b) c h w')
-grid = make_grid(grid, nrow=len(classes))
+grid = make_grid(grid, nrow=len(classes), pad_value=1)
 
 # to image
 grid = 255. * rearrange(grid, 'c h w -> h w c').cpu().numpy()
