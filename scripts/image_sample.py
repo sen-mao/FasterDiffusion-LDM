@@ -51,7 +51,9 @@ def main():
     if not args.use_faster_diffusion:  # ldm
         key_time_steps = tuple(range(args.ddim_steps + 1))
     else:  # ldm w/ faster diffusion
-        key_time_steps = (0, 1, 2, 3, 4, 5, 10, 15, 25, 35, 55, 75, 85, 95, 96, 97, 98, 99, 110, 125, 135, 140, 145, 146, 147, 148, 149, 155, 160, 170, 171, 172, 173, 174, 185, 195, 196, 197, 198, 199, 210, 222, 223, 224, 235, 247, 248, 249, args.ddim_steps)
+        key_time_steps = (0, 1, 2, 3, 4, 5, 10, 15, 25, 35, 55, 75, 85, 95, 96, 97, 98, 99,
+                          110, 125, 135, 140, 145, 146, 147, 148, 149, 155, 160, 170, 171, 172, 173, 174, 185, 195, 196, 197, 198, 199,
+                          210, 222, 223, 224, 235, 247, 248, 249, args.ddim_steps)
     sampler.model.model.diffusion_model.register_store = {
         'bs': args.batch_size,
         'tqdm_disable': args.tqdm_disable,

@@ -83,4 +83,8 @@ python evaluations/evaluator.py evaluations/VIRTUAL_imagenet256_labeled.npz $OPE
 }
 ```
 
+## Acknowledgement
+
+This codebase is built based on [LDM](https://github.com/CompVis/latent-diffusion/tree/main), and references both [ADM](https://github.com/openai/guided-diffusion/tree/main) and [MDT](https://github.com/sail-sg/MDT/tree/main) code. Thanks very much.
+
 
