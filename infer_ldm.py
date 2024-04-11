@@ -39,7 +39,7 @@ torch.manual_seed(1)
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 
-classes = [25, 187, 448, 992, 108, 282]  # define classes to be sampled here
+classes = [25, 187, 448, 992, 123, 11] # define classes to be sampled here
 n_samples_per_class = 1
 
 ddim_steps = 250

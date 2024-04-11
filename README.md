@@ -10,11 +10,14 @@
 
 The official codebase for [FasterDiffusion](https://arxiv.org/abs/2312.09608) accelerates [LDM](https://github.com/CompVis/latent-diffusion/tree/main) with ~6x speedup.
 
+## Introduction
+
+<img width="800" alt="image" src="assets/infer_ldm.jpg">
+
 ## Requirements
 
 A suitable conda environment named `ldm-faster-diffusion` can be created
 and activated with:
-
 
 ```
 conda env create -f environment.yaml
