@@ -8,7 +8,7 @@
 >
 > ***Denotes equal contribution.**
 
-The official codebase for [FasterDiffusion](https://arxiv.org/abs/2312.09608) accelerates [LDM](https://github.com/CompVis/latent-diffusion/tree/main) with **~2.2x** speedup.
+The official codebase for [FasterDiffusion](https://arxiv.org/abs/2312.09608) accelerates [LDM](https://github.com/CompVis/latent-diffusion/tree/main) with **~2.36x** speedup.
 
 [//]: # (## Introduction)
 
@@ -50,7 +50,7 @@ python evaluations/evaluator.py evaluations/VIRTUAL_imagenet256_labeled.npz $OPE
 
 echo 'Class-conditional ldm with faster-diffusion sampling for ImageNet256x256:'
 export OPENAI_LOGDIR=output_ldm_fdiffusion_eval
-MODEL_FLAGS="--batch_size 4 --num_samples 50000 --classifier_scale 1.5 --ddim_eta 0.0 --tqdm_disable True --use_faster_diffusion True"
+MODEL_FLAGS="--batch_size 4 --num_samples 50000 --classifier_scale 6 --ddim_eta 0.0 --tqdm_disable True --use_faster_diffusion True"
 mpiexec -n $NUM_GPUS python scripts/image_sample.py $MODEL_FLAGS --config_path $CONFIG_PATH --model_path $MODEL_PATH
 python evaluations/evaluator.py evaluations/VIRTUAL_imagenet256_labeled.npz $OPENAI_LOGDIR/samples_50000x256x256x3.npz
 
@@ -59,10 +59,10 @@ python evaluations/evaluator.py evaluations/VIRTUAL_imagenet256_labeled.npz $OPE
 ## Performance
 
 | Model                  | Dataset | Resolution  | FID&darr; | sFID&darr; | IS&uarr; | Precision&uarr; | Recall&uarr; | s/image&darr; |
-|------------------------|:--------:|:---------:|:---------:|:----:|:--------:|:---------------:|:------------:|:-------:|
-| LDM                    | ImageNet |  256x256  |   3.60    |  --  |  247.67  |      0.870      |    0.480     |   --    |
-| LDM*                   | ImageNet | 256x256 |   3.39    | 5.14 |  204.57  |      0.825      |    0.534     |  7.951  |
-| LDM w/ FasterDiffusion | ImageNet | 256x256  |           |      |          |                 |              |         |
+|------------------------|:--------:|:---------:|:---------:|:----------:|:--------:|:---------------:|:------------:|:-------------:|
+| LDM                    | ImageNet |  256x256  |   3.60    |     --     |  247.67  |      0.870      |    0.480     |      --       |
+| LDM*                   | ImageNet | 256x256 |   3.39    |    5.14    |  204.57  |      0.825      |    0.534     |     7.951     |
+| LDM w/ FasterDiffusion | ImageNet | 256x256  |   4.09    |    5.99    |  207.49  |      0.848      |    0.482     |     3.373     |
 
 \* Denotes the reproduced results.
 
