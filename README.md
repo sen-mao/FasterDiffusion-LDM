@@ -1,4 +1,4 @@
-# Official Implementations "Faster Diffusion: Rethinking the Role of UNet Encoder in Diffusion Models" for LDM (NeurIPS'24)
+# Official Implementations "Faster Diffusion: Rethinking the Role of the Encoder for Diffusion Model Inference" for LDM (NeurIPS'24)
 <a href='https://arxiv.org/abs/2312.09608'><img src='https://img.shields.io/badge/ArXiv-2306.05414-red'></a>
 
 [//]: # (> **Faster Diffusion: Rethinking the Role of the Encoder for Diffusion Model Inference**)
