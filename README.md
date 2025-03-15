@@ -75,12 +75,12 @@ Run the `infer_ldm.py` to generate images with FasterDiffusion.
 
 ```
 @article{li2024faster,
-  title={Faster diffusion: Rethinking the role of the encoder for diffusion model inference},
-  author={Li, Senmao and Hu, Taihang and van de Weijer, Joost and Shahbaz Khan, Fahad and Liu, Tao and Li, Linxuan and Yang, Shiqi and Wang, Yaxing and Cheng, Ming-Ming and others},
-  journal={Advances in Neural Information Processing Systems},
-  volume={37},
-  pages={85203--85240},
-  year={2024}
+      title={Faster diffusion: Rethinking the role of the encoder for diffusion model inference},
+      author={Li, Senmao and Hu, Taihang and van de Weijer, Joost and Shahbaz Khan, Fahad and Liu, Tao and Li, Linxuan and Yang, Shiqi and Wang, Yaxing and Cheng, Ming-Ming and others},
+      journal={Advances in Neural Information Processing Systems},
+      volume={37},
+      pages={85203--85240},
+      year={2024}
 }
 
 @misc{rombach2021highresolution,
