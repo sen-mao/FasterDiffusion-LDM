@@ -2,7 +2,7 @@
 
 <a href='https://arxiv.org/abs/2312.09608'><img src='https://img.shields.io/badge/ArXiv-2306.05414-red'></a>
 
-> **Faster Diffusion: Rethinking the Role of UNet Encoder in Diffusion Models**
+> **Faster Diffusion: Rethinking the Role of the Encoder for Diffusion Model Inference**
 >
 > [Senmao Li](https://github.com/sen-mao), [Taihang Hu](https://github.com/hutaiHang), [Fahad Khan](https://sites.google.com/view/fahadkhans/home), [Linxuan Li](https://github.com/Potato-lover), [Shiqi Yang](https://www.shiqiyang.xyz/), [Yaxing Wang](https://yaxingwang.netlify.app/author/yaxing-wang/), [Ming-Ming Cheng](https://mmcheng.net/), [Jian Yang](https://scholar.google.com.hk/citations?user=6CIDtZQAAAAJ&hl=en)
 >
