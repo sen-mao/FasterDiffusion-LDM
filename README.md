@@ -74,11 +74,13 @@ Run the `infer_ldm.py` to generate images with FasterDiffusion.
 ## BibTeX
 
 ```
-@article{li2023faster,
-  title={Faster diffusion: Rethinking the role of unet encoder in diffusion models},
-  author={Li, Senmao and Hu, Taihang and Khan, Fahad Shahbaz and Li, Linxuan and Yang, Shiqi and Wang, Yaxing and Cheng, Ming-Ming and Yang, Jian},
-  journal={arXiv preprint arXiv:2312.09608},
-  year={2023}
+@article{li2024faster,
+  title={Faster diffusion: Rethinking the role of the encoder for diffusion model inference},
+  author={Li, Senmao and Hu, Taihang and van de Weijer, Joost and Shahbaz Khan, Fahad and Liu, Tao and Li, Linxuan and Yang, Shiqi and Wang, Yaxing and Cheng, Ming-Ming and others},
+  journal={Advances in Neural Information Processing Systems},
+  volume={37},
+  pages={85203--85240},
+  year={2024}
 }
 
 @misc{rombach2021highresolution,
