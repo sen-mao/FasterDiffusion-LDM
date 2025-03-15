@@ -1,11 +1,13 @@
-# Faster Diffusion: Rethinking the Role of the Encoder for Diffusion Model Inference
-
+# Official Implementations "Faster Diffusion: Rethinking the Role of UNet Encoder in Diffusion Models" for DiT (NeurIPS'24)
 <a href='https://arxiv.org/abs/2312.09608'><img src='https://img.shields.io/badge/ArXiv-2306.05414-red'></a>
 
-> **Faster Diffusion: Rethinking the Role of the Encoder for Diffusion Model Inference**
->
-> [Senmao Li](https://github.com/sen-mao), [Taihang Hu](https://github.com/hutaiHang), [Joost van de Weijer](https://scholar.google.com/citations?user=Gsw2iUEAAAAJ&hl=en&oi=sra), [Fahad Shahbaz Khan](https://sites.google.com/view/fahadkhans/home), [Tao Liu](ltolcy0@gmail.com), [Linxuan Li](https://github.com/Potato-lover), [Shiqi Yang](https://www.shiqiyang.xyz/), [Yaxing Wang](https://yaxingwang.netlify.app/author/yaxing-wang/), [Ming-Ming Cheng](https://mmcheng.net/), [Jian Yang](https://scholar.google.com.hk/citations?user=6CIDtZQAAAAJ&hl=en)
->
+[//]: # (> **Faster Diffusion: Rethinking the Role of the Encoder for Diffusion Model Inference**)
+
+[//]: # (>)
+
+[//]: # (> [Senmao Li]&#40;https://github.com/sen-mao&#41;, [Taihang Hu]&#40;https://github.com/hutaiHang&#41;, [Joost van de Weijer]&#40;https://scholar.google.com/citations?user=Gsw2iUEAAAAJ&hl=en&oi=sra&#41;, [Fahad Shahbaz Khan]&#40;https://sites.google.com/view/fahadkhans/home&#41;, [Tao Liu]&#40;ltolcy0@gmail.com&#41;, [Linxuan Li]&#40;https://github.com/Potato-lover&#41;, [Shiqi Yang]&#40;https://www.shiqiyang.xyz/&#41;, [Yaxing Wang]&#40;https://yaxingwang.netlify.app/author/yaxing-wang/&#41;, [Ming-Ming Cheng]&#40;https://mmcheng.net/&#41;, [Jian Yang]&#40;https://scholar.google.com.hk/citations?user=6CIDtZQAAAAJ&hl=en&#41;)
+
+[//]: # (>)
 
 The official codebase for [FasterDiffusion](https://arxiv.org/abs/2312.09608) accelerates [LDM](https://github.com/CompVis/latent-diffusion/tree/main) with **~2.36x** speedup.
 
